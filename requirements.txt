@@ -1,0 +1,8 @@
+transformers
+datasets
+evaluate
+sentencepiece
+accelerate
+torch
+peft
+pyvi
