@@ -71,7 +71,7 @@ def normalText(sent):
     sent = str(sent).replace('_',' ').replace('/',' trên ')
     sent = re.sub('-{2,}','',sent)
     sent = re.sub('\\s+',' ', sent)
-    patPrice = r'([0-9]+k?(\s?-\s?)[0-9]+\s?(k|K))|([0-9]+(.|,)?[0-9]+\s?(triệu|ngàn|trăm|k|K|))|([0-9]+(.[0-9]+)?Ä‘)|([0-9]+k)'
+    patPrice = r'(?<![A-Za-z0-9])([0-9]+([.,][0-9]+)?\s?(triệu|ngàn|trăm|k|K|₫|đ))|([0-9]+k(\s?-\s?[0-9]+k)?)'
     patHagTag = r'#\s?[aăâbcdđeêghiklmnoôơpqrstuưvxyàằầbcdđèềghìklmnòồờpqrstùừvxỳáắấbcdđéếghíklmnóốớpqrstúứvxýảẳẩbcdđẻểghỉklmnỏổởpqrstủửvxỷạặậbcdđẹệghịklmnọộợpqrstụựvxỵãẵẫbcdđẽễghĩklmnõỗỡpqrstũữvxỹAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYÀẰẦBCDĐÈỀGHÌKLMNÒỒỜPQRSTÙỪVXỲÁẮẤBCDĐÉẾGHÍKLMNÓỐỚPQRSTÚỨVXÝẠẶẬBCDĐẸỆGHỊKLMNỌỘỢPQRSTỤỰVXỴẢẲẨBCDĐẺỂGHỈKLMNỎỔỞPQRSTỦỬVXỶÃẴẪBCDĐẼỄGHĨKLMNÕỖỠPQRSTŨỮVXỸ]+'
     patURL = r"(?:http://|www.)[^\"]+"
     sent = re.sub(patURL,'website',sent)
@@ -101,7 +101,7 @@ def deleteIcon(text):
     text = text.lower()
     s = ''
     pattern = r"[a-zA-ZaăâbcdđeêghiklmnoôơpqrstuưvxyàằầbcdđèềghìklmnòồờpqrstùừvxỳáắấbcdđéếghíklmnóốớpqrstúứvxýảẳẩbcdđẻểghỉklmnỏổởpqrstủửvxỷạặậbcdđẹệghịklmnọộợpqrstụựvxỵãẵẫbcdđẽễghĩklmnõỗỡpqrstũữvxỹAĂÂBCDĐEÊGHIKLMNOÔƠPQRSTUƯVXYÀẰẦBCDĐÈỀGHÌKLMNÒỒỜPQRSTÙỪVXỲÁẮẤBCDĐÉẾGHÍKLMNÓỐỚPQRSTÚỨVXÝẠẶẬBCDĐẸỆGHỊKLMNỌỘỢPQRSTỤỰVXỴẢẲẨBCDĐẺỂGHỈKLMNỎỔỞPQRSTỦỬVXỶÃẴẪBCDĐẼỄGHĨKLMNÕỖỠPQRSTŨỮVXỸ,._]"
-    
+
     for char in text:
         if char !=' ':
             if len(re.findall(pattern, char)) != 0:
@@ -149,7 +149,7 @@ correct_mapping = {
     "thjk": "thích",
     "qá": "quá",
     "trể": "trễ",
-    "bgjo": "bao giờ"
+    "bgjo": "bao giờ",
 }
 def tokmap(tok):
     if tok.lower() in correct_mapping:
@@ -188,9 +188,9 @@ def clean_doc(doc, word_segment=False, lower_case=False, max_length=512):
     doc = re.sub("\\s+", " ", doc).strip()
     array = doc.split(" ")
     if len(array) > max_length:
-        aa = int(max_length/2) 
+        aa = int(max_length/2)
         doc = " ".join(array[:aa]) + " " + " ".join(array[-aa:])
     doc = re.sub("\\s+", " ", doc).strip()
-    
+
     doc = doc.replace(". . .", " . ")
     return doc
